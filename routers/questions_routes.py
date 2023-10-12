@@ -1,11 +1,15 @@
 from pydantic import BaseModel
 from fastapi import APIRouter
-from fastapi.responses import FileResponse
 
-from db_functions import write_question, get_last_question
+from db_functions.questions_funcs import write_questions, get_last_question
+
+class QuestionInfo(BaseModel):
+    questions_num: int
 
 router = APIRouter()
 
-@router.get("/get_all_products", tags=["products"])
-async def get_all_products_info():
-    return write_question()
+@router.post("/get_question", tags=["questions"])
+async def get_question_and_write_new(questions_info: QuestionInfo):
+    question = get_last_question()
+    write_questions()
+    return question
