@@ -2,6 +2,8 @@ version: '3'
 services:
   db:
     image: postgres:13
+    volumes:
+      - db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
@@ -16,8 +18,11 @@ services:
     depends_on:
       - db
     environment:
-      - DB_HOST=localhost
+      - DB_HOST=db
       - DB_PORT=5432
       - DB_USER=postgres
       - DB_PASSWORD=1234
       - DB_NAME=questions
+
+volumes:
+  db_data:
