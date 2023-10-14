@@ -6,9 +6,12 @@ from sqlalchemy.orm import sessionmaker
 
 from db_functions.models import Question, engine
 
+type_QuestionFromAPI = dict[str, int | str | dict[str, str]]
+type_QuestionFromDB = dict[str, str | int]
+
 session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-def write_questions(questions_count):
+def write_questions(questions_count: int) -> None:
     for _ in range(questions_count):
         while True:
             question = get_new_question()
@@ -16,7 +19,7 @@ def write_questions(questions_count):
                 break
         write_question(question)
 
-def write_question(question):
+def write_question(question: type_QuestionFromAPI) -> None:
     with session() as db:
         new_question = Question(
             second_id=question["id"],
@@ -33,7 +36,7 @@ def write_question(question):
         db.commit()
 
 
-def get_last_question():
+def get_last_question() -> type_QuestionFromDB:
     with session() as db:
         last_question = db.query(Question).order_by(Question.id.desc()).first()
     if last_question:
@@ -48,7 +51,7 @@ def get_last_question():
         }
     return {}
 
-def get_new_question():
+def get_new_question() -> type_QuestionFromAPI:
     return json.loads(
         requests.get("https://jservice.io/api/random?count=1").text
     )[0]

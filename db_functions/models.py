@@ -2,7 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy import Column, Integer, String, TIMESTAMP
 from sqlalchemy.ext.declarative import declarative_base
 
-from db_functions.db_config import DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER
+from db_functions.db_config import (
+    DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER
+)
 
 
 DATABASE_URL = (
